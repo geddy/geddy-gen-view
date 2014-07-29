@@ -1,2 +1,12 @@
-Put your generator docs in here.
-They will be displayed when calling the "help" task of your generator.
+Geddy MVC view generator.
+
+Generates a geddy view for you.
+
+Usage:
+
+    geddy gen view create[name,template]
+
+        name          Name of your view including subdirectories (e.g. users/account)
+        template      Path to the template file to use
+        -p --public   (optional) if set the view will be created in the public/views, instead of the app/views folder
+        -f --force    (optional) use to replace an existing view
