@@ -109,11 +109,13 @@ tests = {
       });
     });
   },
-  'Create view programaticly with data': function()
+  'Create view with data': function()
   {
+    var appPath = process.cwd();
     var viewGen = require('../index.js');
 
-    viewGen.create('foo/data.html', path.join(__dirname, 'template', 'data.html.ejs'), { foo: 'bar', bar: 'baz'});
+    viewGen.setViewData({ foo: 'bar', bar: 'baz'});
+    viewGen(appPath, ['foo/data.html', path.join(__dirname, 'template', 'data.html.ejs')]);
 
     var viewPath = path.join(viewsDir, 'foo', 'data.html');
     assert.equal(fs.existsSync(viewPath), true);

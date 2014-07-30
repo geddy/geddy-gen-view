@@ -35,6 +35,11 @@ task('create', function(name, template, data) {
     return;
   }
 
+  if (!data) {
+    data = process._viewData || {};
+    delete process._viewData;
+  }
+
   // try to parse data
   if (typeof data === 'string') {
     try {
