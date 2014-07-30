@@ -1,43 +1,13 @@
-var fs = require('fs');
 var path = require('path')
+  , fs = require('fs')
+  , cwd = process.cwd()
   , utilities = require('utilities')
-  , geddyPath = path.normalize(path.join(require.resolve('geddy'), '../../'));
-
-// Load the basic Geddy toolkit
-require(path.join(geddyPath,'lib/geddy'));
-
-// Dependencies
-var cwd = process.cwd()
-  , utils = require(path.join(geddyPath, 'lib/utils'))
-  , Adapter = require(path.join(geddyPath, 'lib/template/adapters')).Adapter
+  , genutils = require('geddy-genutils')
   , genDirname = __dirname;
 
-function flagSet(shortName, name) {
-  return process.argv.indexOf(shortName) !== -1 || process.argv.indexOf(name) !== -1;
-}
-
-var _writeTemplate = function (src, dest, data) {
-  var ext = path.extname(src)
-    , supported = ['.ejs', '.jade', '.mustache', '.swig', '.handlebars']
-
-  if (supported.indexOf(ext) == -1) {
-    fail('Unsuported template engine. Try one of these instead: ' + supported.join(', '));
-    return;
-  }
-
-  var text = fs.readFileSync(src, 'utf8').toString()
-    , adapter
-    , templContent;
-
-  // render with the correct adapter
-  adapter = new Adapter({engine: ext.substring(1), template: text});
-  templContent = adapter.render(data);
-
-  // Write file
-  fs.writeFileSync(dest, templContent, 'utf8');
-
-  console.log('[Added] ' + dest);
-};
+// Load the basic Geddy toolkit
+genutils.loadGeddy();
+var utils = genutils.loadGeddyUtils();
 
 // Tasks
 task('default', function() {
@@ -77,8 +47,8 @@ task('create', function(name, template, data) {
     data = {};
   }
 
-  var force = flagSet('-f','--force');
-  var usePublic = flagSet('-p', '--public');
+  var force = genutils.flagSet('-f','--force');
+  var usePublic = genutils.flagSet('-p', '--public');
 
   var viewPath = path.join(appPath, usePublic ? 'public' : 'app', 'views', name);
   var viewDir = path.dirname(viewPath);
@@ -102,7 +72,7 @@ task('create', function(name, template, data) {
   data.viewDirName = path.relative(appPath, viewDir);
   data.viewIsPublic = usePublic;
 
-  _writeTemplate(template, viewPath, data);
+  genutils.template.write(template, viewPath, data);
 });
 
 task('help', function() {
