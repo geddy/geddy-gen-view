@@ -20,7 +20,12 @@ task('default', function() {
 });
 
 namespace(ns, function() {
-  task('create', function(name, template, data) {
+  task('create', function(name, template, data, transform) {
+    if (!genutils.inAppRoot()) {
+      fail('You must run this generator from the root of your application.');
+      return;
+    }
+
     if (!name) {
       fail('Missing view name.');
       return;
@@ -33,10 +38,6 @@ namespace(ns, function() {
 
     var appPath = process.cwd();
     var viewsDir = path.join(appPath, 'app', 'views');
-    if (!fs.existsSync(viewsDir) || !fs.statSync(viewsDir).isDirectory()) {
-      fail('You must run this generator from the root of your application.');
-      return;
-    }
 
     if (!data) {
       data = genutils.getShared() || {};
@@ -79,7 +80,7 @@ namespace(ns, function() {
     data.viewDirName = path.relative(appPath, viewDir);
     data.viewIsPublic = usePublic;
 
-    genutils.template.write(template, viewPath, data);
+    genutils.template.write(template, viewPath, data, transform);
   });
 
   task('help', function() {

@@ -23,6 +23,7 @@ function createView(name, template, argv, cb)
 
   var p = exec(path.join(__dirname, 'helpers', 'exec.js') + ' ' + name + ' ' + template + ' ' + argv.join(' '), cb);
   p.stdout.pipe(process.stdout);
+  //p.stderr.pipe(process.stderr);
 }
 
 tests = {
@@ -112,7 +113,7 @@ tests = {
   },
   'Create view with data': function(next)
   {
-    genutils.runGen('geddy-gen-view',null, ['foo/data.html', path.join(__dirname, 'template', 'data.html.ejs')], { foo: 'bar', bar: 'baz'}, function() {
+    genutils.runGen('geddy-gen-view', ['foo/data.html', path.join(__dirname, 'template', 'data.html.ejs')], { foo: 'bar', bar: 'baz'}, function() {
       var viewPath = path.join(viewsDir, 'foo', 'data.html');
       assert.equal(fs.existsSync(viewPath), true);
       assert.equal(fs.readFileSync(viewPath, 'utf8'), fs.readFileSync(path.join(__dirname, 'fixtures', 'data.html')));
