@@ -112,7 +112,7 @@ namespace(ns, function() {
   });
 });
 
-testTask('Resource', ['view:clean', 'view:prepare-test-app'], function() {
+testTask('View', ['view:clean', 'view:prepare-test-app'], function() {
   this.testFiles.exclude('test/helpers/**');
   this.testFiles.exclude('test/fixtures/**');
   this.testFiles.exclude('test/template/**');
