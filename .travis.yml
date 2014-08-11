@@ -12,5 +12,6 @@ before_script:
   - npm install https://github.com/mde/utilities/archive/master.tar.gz
   - npm install https://github.com/geddy/geddy/archive/master.tar.gz
   - npm install https://github.com/geddy/geddy-genutils/archive/master.tar.gz
+  - npm link
 
 script: node_modules/jake/bin/cli.js test --trace
